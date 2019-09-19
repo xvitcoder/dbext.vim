@@ -60,15 +60,15 @@ let g:dbext_default_profile_myPSG='type=pgsql:host=localhost:user=root:dsnname=m
 Assuming you work on many different projects, you can automatically have dbext choose the correct database connection profile by adding autocmds that use the filesystem path to choose the correct profile:
 ```vim
 augroup project1
- au!
- " Automatically choose the correct dbext profile
- autocmd BufRead */projectX/sql/* DBSetOption profile=myASA
+    au!
+    " Automatically choose the correct dbext profile 
+    autocmd BufRead */projectX/sql/* DBSetOption profile=myASA
 augroup end
 
 augroup project2
- au!
- " Automatically choose the correct dbext profile
- autocmd BufRead */projectY/* DBSetOption profile=myORA
+    au!
+    " Automatically choose the correct dbext profile 
+    autocmd BufRead */projectY/* DBSetOption profile=myORA
 augroup end
 ```
 Or from the menu or the maps created you can choose a profile at any time.
@@ -172,17 +172,17 @@ SELECT s.script, ts.event, t.name , s.script_language, sv.name
 ```
 
 Benefit:
-You did not have to test your SQL by cutting and pasting it into a separate tool and replacing all the object and host variables yourself.  Just by visually selecting the string and running the command DBExecSQL (or the default mapping <Leader>se) the SQL statement was executed against the database and allowed to you enter host variables.
+You did not have to test your SQL by cutting and pasting it into a separate tool and replacing all the object and host variables yourself.  Just by visually selecting the string and running the command `DBExecSQL` (or the default mapping `<Leader>se`) the SQL statement was executed against the database and allowed to you enter host variables.
 
 Additional Commands
 ---------------------------------
-DBExecSQL - Enter any command you want sent to the database
-DBExecRangeSQL - Enter any range of statements you want executed
-Select  - Enter the remainder of a select (ie :Select * from customer)
-Call  - Call a stored procedure
-Update  - Enter the remainder of an update
-Insert  - Enter the remainder of an insert
-Delete  - Enter the remainder of an delete
-Drop    - Enter the remainder of a drop
-Alter   - Enter the remainder of an alter
-Create  - Enter the remainder of a create
+- `DBExecSQL` - Enter any command you want sent to the database
+- `DBExecRangeSQL` - Enter any range of statements you want executed
+- `Select`  - Enter the remainder of a select (ie :Select * from customer)
+- `Call`  - Call a stored procedure
+- `Update`  - Enter the remainder of an update
+- `Insert`  - Enter the remainder of an insert
+- `Delete`  - Enter the remainder of an delete
+- `Drop`    - Enter the remainder of a drop
+- `Alter`   - Enter the remainder of an alter
+- `Create`  - Enter the remainder of a create
