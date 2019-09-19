@@ -191,6 +191,12 @@ if !exists(':DBListProcedure')
     nmap <unique> <script> <Plug>DBListProcedure
                 \ :DBListProcedure<CR>
 endif
+if !exists(':DBListType')
+    command! -nargs=? DBListType
+                \ :call dbext#DB_getListType(<f-args>)
+    nmap <unique> <script> <Plug>DBListType
+                \ :DBListType<CR>
+endif
 if !exists(':DBListView')
     command! -nargs=? DBListView
                 \ :call dbext#DB_getListView(<f-args>)
@@ -240,6 +246,7 @@ if !exists(':DBResultsToggleResize')
                 \ :call dbext#DB_windowResize()
 end
 "}}}
+
 " Mappings {{{
 if g:dbext_default_usermaps != 0
     if maparg(g:dbext_map_prefix.'e', 'x') == ''
@@ -315,6 +322,9 @@ if g:dbext_default_usermaps != 0
     if maparg(g:dbext_map_prefix.'lt', 'n') == ''
         exec 'nmap <unique> '.g:dbext_map_prefix.'lt <Plug>DBListTable'
     endif
+    if maparg(g:dbext_map_prefix.'lT', 'n') == ''
+        exec 'nmap <unique> '.g:dbext_map_prefix.'lt <Plug>DBListType'
+    endif
     if maparg(g:dbext_map_prefix.'lp', 'n') == ''
         exec 'nmap <unique> '.g:dbext_map_prefix.'lp <Plug>DBListProcedure'
     endif
@@ -351,6 +361,7 @@ if g:dbext_default_usermaps != 0
     endif
 endif
 "}}}
+
 " Menus {{{
 if has("gui_running") && has("menu") && g:dbext_default_menu_mode != 0
     if g:dbext_default_menu_mode == 1
@@ -399,6 +410,8 @@ if has("gui_running") && has("menu") && g:dbext_default_menu_mode != 0
         exec 'inoremenu <script> '.menuRoot.'.Table\ List<TAB>'.leader.'slt  <C-O>:silent call feedkeys("<C-O>'.leader.'slt")<CR>'
         exec 'noremenu  <script> '.menuRoot.'.Procedure\ List<TAB>'.leader.'slp  :call feedkeys("'.leader.'slp")<CR>'
         exec 'inoremenu <script> '.menuRoot.'.Procedure\ List<TAB>'.leader.'slp  <C-O>:silent call feedkeys("<C-O>'.leader.'slp")<CR>'
+        exec 'noremenu  <script> '.menuRoot.'.Type\ List<TAB>'.leader.'slT  :call feedkeys("'.leader.'slT")<CR>'
+        exec 'inoremenu <script> '.menuRoot.'.Type\ List<TAB>'.leader.'slT  <C-O>:silent call feedkeys("<C-O>'.leader.'slT")<CR>'
         exec 'noremenu  <script> '.menuRoot.'.View\ List<TAB>'.leader.'slv  :call feedkeys("'.leader.'slv")<CR>'
         exec 'inoremenu <script> '.menuRoot.'.View\ List<TAB>'.leader.'slv  <C-O>:silent call feedkeys("<C-O>'.leader.'slv")<CR>'
         exec 'vnoremenu <script> '.menuRoot.'.Assign\ Variable\ (Visual\ selection)<TAB>'.leader.'sa :DBVarRangeAssign<CR>'
@@ -442,6 +455,8 @@ if has("gui_running") && has("menu") && g:dbext_default_menu_mode != 0
         exec 'inoremenu <script> '.menuRoot.'.Table\ List<TAB>'.leader.'slt  <C-O>:DBListTable<CR>'
         exec 'noremenu  <script> '.menuRoot.'.Procedure\ List<TAB>'.leader.'slp  :DBListProcedure<CR>'
         exec 'inoremenu <script> '.menuRoot.'.Procedure\ List<TAB>'.leader.'slp  <C-O>:DBListProcedure<CR>'
+        exec 'noremenu  <script> '.menuRoot.'.Type\ List<TAB>'.leader.'slT  :DBListType<CR>'
+        exec 'inoremenu <script> '.menuRoot.'.Type\ List<TAB>'.leader.'slT  <C-O>:DBListType<CR>'
         exec 'noremenu  <script> '.menuRoot.'.View\ List<TAB>'.leader.'slv  :DBListView<CR>'
         exec 'inoremenu <script> '.menuRoot.'.View\ List<TAB>'.leader.'slv  <C-O>:DBListView<CR>'
         exec 'vnoremenu <script> '.menuRoot.'.Assign\ Variable\ (Visual\ selection)<TAB>'.leader.'sa :DBVarRangeAssign<CR>'
@@ -454,6 +469,8 @@ if has("gui_running") && has("menu") && g:dbext_default_menu_mode != 0
     endif
 endif
 "}}}
+
+" Functions {{{
 function! DB_getDictionaryName( which )
     return dbext#DB_getDictionaryName( a:which )
 endfunction
@@ -589,5 +606,6 @@ augroup END
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
+"}}}
 
 " vim:fdm=marker:nowrap:ts=4:expandtab:
