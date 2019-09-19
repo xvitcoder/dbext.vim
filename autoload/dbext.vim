@@ -3789,7 +3789,7 @@ function! s:DB_PGSQL_getListType(type_prefix)
                 \ "  FROM pg_user u, pg_type t JOIN pg_enum e ON e.enumtypid = t.oid " .
                 \ " WHERE t.typowner = u.usesysid " .
                 \ "   AND u.usename  like '" . owner . "%' " .
-                \ "   AND p.proname  like '" . object . "%' " .
+                \ "   AND t.typname  like '" . object . "%' " .
                 \ " ORDER BY t.typname"
 
     return s:DB_PGSQL_execSql(query)
