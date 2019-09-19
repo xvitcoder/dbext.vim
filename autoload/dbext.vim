@@ -1996,9 +1996,9 @@ function! s:DB_ASA_stripHeaderFooter(result)
     " table_name         table_id
     " ---------------------------
     " ZTSAAP_C_OPKEY     867
-    " 
+    "
     " (1 rows)
-    " 
+    "
     " Execution time: 0.025 seconds
 
     " Strip off column headers ending with a newline
@@ -3779,6 +3779,19 @@ function! s:DB_PGSQL_getListProcedure(proc_prefix)
                 \ "   AND u.usename  like '" . owner . "%' " .
                 \ "   AND p.proname  like '" . object . "%' " .
                 \ " ORDER BY p.proname"
+    return s:DB_PGSQL_execSql(query)
+endfunction
+
+function! s:DB_PGSQL_getListType(type_prefix)
+    let owner   = s:DB_getObjectOwner(a:type_prefix)
+    let object  = s:DB_getObjectName(a:type_prefix)
+    let query = "  SELECT t.typname AS type, e.enumlabel AS value, pg_get_userbyid(u.usesysid) AS owner " .
+                \ "  FROM pg_user u, pg_type t JOIN pg_enum e ON e.enumtypid = t.oid " .
+                \ " WHERE t.typowner = u.usesysid " .
+                \ "   AND u.usename  like '" . owner . "%' " .
+                \ "   AND p.proname  like '" . object . "%' " .
+                \ " ORDER BY t.typname"
+
     return s:DB_PGSQL_execSql(query)
 endfunction
 
@@ -6293,6 +6306,23 @@ function! dbext#DB_getListProcedure(...)
         endif
     endif
     return dbext#DB_execFuncTypeWCheck('getListProcedure', proc_prefix)
+endfunction
+
+function! dbext#DB_getListType(...)
+    if(a:0 > 0)
+        " Strip any leading or trailing spaces
+        let type_prefix = substitute(a:1,'\s*\(\w*\)\s*','\1','')
+    else
+        let type_prefix = s:DB_getInput(
+                    \ "Enter type prefix: ",
+                    \ '',
+                    \ "dbext_cancel"
+                    \ )
+        if type_prefix == "dbext_cancel"
+            return ""
+        endif
+    endif
+    return dbext#DB_execFuncTypeWCheck('getListType', type_prefix)
 endfunction
 
 function! dbext#DB_getListView(...)
